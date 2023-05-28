@@ -1,5 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>  //Підключення необхідних для роботи бібліотек
+#include <stdio.h>//Підключення необхідних бібліотек
+#include <stdlib.h>
+#include <time.h>
 
 #define SIZE 3
 
@@ -16,18 +17,20 @@ int dot_product(int vector1[SIZE], int vector2[SIZE]) {
 int is_orthonormal(int matrix[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
+            //Перевірка, чи вектори мають скалярний добуток 0, якщо індекси не співпадають
             if (i != j && dot_product(matrix[i], matrix[j]) != 0) {
-                return 0;  //Знайдено ненульовий скалярний добуток рядків
+                return 0;
             }
+            //Перевірка, чи вектор має скалярний добуток 1 з собою, якщо індекси співпадають
             if (i == j && dot_product(matrix[i], matrix[j]) != 1) {
-                return 0;  //Знайдено скалярний добуток рядка на себе, що не дорівнює 1
+                return 0;
             }
         }
     }
-    return 1;//Матриця є ортонормованою
+    return 1;
 }
 
-//Функція для виведення матриці на екран
+//Функція для виводу матриці на екран
 void print_matrix(int matrix[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -40,26 +43,27 @@ void print_matrix(int matrix[SIZE][SIZE]) {
 int main() {
     int matrix[SIZE][SIZE];
 
-    printf("Введіть елементи матриці розміром %dx%d:\n", SIZE, SIZE);//введеня необхідної для обчислення інформації з клавіатури
+    //Ініціалізація генератора випадкових чисел
+    srand(time(NULL));
+
+    //Заповнення матриці випадковими числами
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            printf("Елемент [%d][%d]: ", i, j);
-            scanf_s("%d", &matrix[i][j]);
+            matrix[i][j] = rand() % 201 - 100;  //Випадкове число від -100 до 100
         }
     }
 
-    printf("Введена матриця:\n");
+    printf("Згенерована матриця:\n");//Виведеня результатів на екран юзера
     print_matrix(matrix);
 
-    if (is_orthonormal(matrix)) {//Виведення результатів на екран юзера
+    if (is_orthonormal(matrix)) {
         printf("Матриця є ортонормованою.\n");
     }
     else {
         printf("Матриця не є ортонормованою.\n");
     }
 
-    return 0;//кінець програми
+    return 0;//Кінець програми
 }
-
 
 
